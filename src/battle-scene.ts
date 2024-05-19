@@ -867,6 +867,7 @@ export default class BattleScene extends SceneBase {
 			}
 		}
 
+		// Found You!!! - BobWizardLad
 		if (double === undefined && newWaveIndex > 1) {
 			if (newBattleType === BattleType.WILD && !this.gameMode.isWaveFinal(newWaveIndex)) {
 				const doubleChance = new Utils.IntegerHolder(newWaveIndex % 10 === 0 ? 32 : 8);
@@ -878,7 +879,7 @@ export default class BattleScene extends SceneBase {
 		} else if (!battleConfig)
 			newDouble = !!double;
 
-		if (Overrides.DOUBLE_BATTLE_OVERRIDE)
+		if (Overrides.DOUBLE_BATTLE_OVERRIDE || true) // Double Battle Mode Override Test
 			newDouble = true;
 
 		const lastBattle = this.currentBattle;
@@ -946,7 +947,7 @@ export default class BattleScene extends SceneBase {
 					this.pushPhase(new LevelCapPhase(this));
 			}
 		}
-		
+
 		return this.currentBattle;
 	}
 
