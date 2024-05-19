@@ -6,12 +6,14 @@ import PokemonSpecies, { allSpecies } from "./data/pokemon-species";
 import { Arena } from "./field/arena";
 import * as Utils from "./utils";
 import * as Overrides from './overrides';
+import { Game } from "phaser";
 
 export enum GameModes {
   CLASSIC,
   ENDLESS,
   SPLICED_ENDLESS,
-  DAILY
+  DAILY,
+  DOUBLE
 }
 
 interface GameModeConfig {
@@ -150,6 +152,7 @@ export class GameMode implements GameModeConfig {
   isWaveFinal(waveIndex: integer): boolean {
     switch (this.modeId) {
       case GameModes.CLASSIC:
+      case GameModes.DOUBLE:
         return waveIndex === 200;
       case GameModes.ENDLESS:
       case GameModes.SPLICED_ENDLESS:
@@ -162,6 +165,7 @@ export class GameMode implements GameModeConfig {
   getClearScoreBonus(): integer {
     switch (this.modeId) {
       case GameModes.CLASSIC:
+      case GameModes.DOUBLE:
         return 5000;
       case GameModes.DAILY:
         return 2500;
@@ -171,6 +175,7 @@ export class GameMode implements GameModeConfig {
   getEnemyModifierChance(isBoss: boolean): integer {
     switch (this.modeId) {
       case GameModes.CLASSIC:
+      case GameModes.DOUBLE:
       case GameModes.DAILY:
         return !isBoss ? 18 : 6;
       case GameModes.ENDLESS:
@@ -183,6 +188,8 @@ export class GameMode implements GameModeConfig {
     switch (this.modeId) {
       case GameModes.CLASSIC:
         return 'Classic';
+      case GameModes.DOUBLE:
+        return 'Double';
       case GameModes.ENDLESS:
         return 'Endless';
       case GameModes.SPLICED_ENDLESS:
@@ -195,6 +202,7 @@ export class GameMode implements GameModeConfig {
 
 export const gameModes = Object.freeze({
   [GameModes.CLASSIC]: new GameMode(GameModes.CLASSIC, { isClassic: true, hasTrainers: true, hasFixedBattles: true }),
+  [GameModes.DOUBLE]: new GameMode(GameModes.DOUBLE, { isClassic: true, hasTrainers: true, hasFixedBattles: true }),
   [GameModes.ENDLESS]: new GameMode(GameModes.ENDLESS, { isEndless: true, hasShortBiomes: true, hasRandomBosses: true }),
   [GameModes.SPLICED_ENDLESS]: new GameMode(GameModes.SPLICED_ENDLESS, { isEndless: true, hasShortBiomes: true, hasRandomBosses: true, isSplicedOnly: true }),
   [GameModes.DAILY]: new GameMode(GameModes.DAILY, { isDaily: true, hasTrainers: true, hasNoShop: true })
